@@ -1,6 +1,7 @@
 from flask import Flask, make_response
 from markupsafe import escape
 from db import create_db
+from services.authors import Author
 
 
 app = Flask(__name__)
@@ -18,9 +19,11 @@ def authors():
     """
     Returns a list of authors
     """
-    response = make_response(list(db.authors.find({}, {"_id": 0})))
+    author = Author()
+    response = make_response(author.getAllAuthors(db))
     response.headers["Content-Type"] = "application/json"
     return response
+
 
 @app.route("/posts")
 def posts():
